@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I am Sorry Prachi 🥺</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffebee, #f3e5f5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 450px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            color: #d32f2f;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .gif-container {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 12px 35px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn-yes {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .btn-yes:hover {
+            background-color: #43a047;
+            transform: scale(1.05);
+        }
+
+        .btn-no {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-no:hover {
+            background-color: #e53935;
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="gif-container" id="emoji">🥺</div>
+        <h1 id="title">Hey Prachi...</h1>
+        <p id="message">I am really sorry for being oversmart. I value our friendship a lot and promise to keep my brain in check next time. Will you forgive me?</p>
+        
+        <div class="btn-container">
+            <button class="btn-yes" onclick="handleDecision('Yes')">Yes</button>
+            <button class="btn-no" id="noBtn" onclick="handleDecision('No')">No</button>
+        </div>
+    </div>
+
+    <script>
+        // Formspree and Instagram configurations applied
+        const NOTIFICATION_URL = "https://formspree.io/f/mrewoner"; 
+        const INSTA_URL = "https://www.instagram.com/bhav.esh7701/"; 
+
+        let noCount = 0;
+
+        // Custom loop messages when she clicks "No"
+        const apologyStages = [
+            {
+                emoji: "😭",
+                title: "Please? Please? Please?",
+                message: "I know I messed up, but seriously, I'm genuinely sorry. Don't be so harsh now... Give me one more chance? 🙏"
+            },
+            {
+                emoji: "🙇‍♂️",
+                title: "Last chance to forgive me!",
+                message: "Okay, I am completely holding my ears now. I promise 100% no more oversmartness. Please say Yes this time? ✨"
+            }
+        ];
+
+        // Function to send background notification to Formspree
+        function sendNotification(decision, loopCount) {
+            fetch(NOTIFICATION_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Target: "Prachi",
+                    Action: `Clicked ${decision}`,
+                    AttemptNumber: loopCount + 1,
+                    Time: new Date().toLocaleString()
+                })
+            }).catch(err => console.log("Notification error:", err));
+        }
+
+        function handleDecision(choice) {
+            sendNotification(choice, noCount);
+
+            if (choice === 'Yes') {
+                alert("Thank you! Redirecting to my Instagram profile... let's talk! 🎉");
+                window.location.href = INSTA_URL;
+            } else if (choice === 'No') {
+                if (noCount < 2) {
+                    // Change the content for the 2 loops
+                    document.getElementById('emoji').innerText = apologyStages[noCount].emoji;
+                    document.getElementById('title').innerText = apologyStages[noCount].title;
+                    document.getElementById('message').innerText = apologyStages[noCount].message;
+                    noCount++;
+                } else {
+                    // Loop limit reached, hide the 'No' button completely
+                    alert("Alright, you've said No enough times! I'm not taking 'No' for an answer anymore. Click Yes! 😉");
+                    document.getElementById('noBtn').style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
